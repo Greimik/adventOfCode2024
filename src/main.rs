@@ -1,5 +1,7 @@
+use std::collections::HashMap;
 use std::fs;
 use std::io::Error;
+use std::ops::AddAssign;
 
 mod day1;
 
@@ -7,6 +9,8 @@ fn main() {
     let file: Result<String, Error> = fs::read_to_string("src/data/day1_sample.txt");
     let mut left_side: Vec<i32> = vec![];
     let mut right_side: Vec<i32> = vec![];
+    let mut sum: i32 = 0;
+    let mut key_by_occurence: HashMap<i32, i32> = HashMap::new();
     match file {
         Ok(contents) => {
             for line in contents.split('\n') {
@@ -23,11 +27,21 @@ fn main() {
     left_side.sort();
     right_side.sort();
 
-    let mut sum: i32 = 0;
 
-    for index in 0..left_side.len() {
-        let distance = (left_side[index] - right_side[index]).abs();
-        sum += distance;
+    for key in left_side.iter() {
+        if !key_by_occurence.contains_key(key) {
+            key_by_occurence.insert(*key, 0);
+            for right_item in right_side.iter() {
+                if right_item == key {
+                    key_by_occurence.get_mut(key).unwrap().add_assign(1);
+                }
+            }
+        }
+    }
+
+    for key in left_side.iter() {
+        let similarity = *key * key_by_occurence.get(key).unwrap();
+        sum += similarity;
     }
     println!("{}", sum);
 }

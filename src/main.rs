@@ -1,7 +1,10 @@
-use crate::day1::solve_day1;
+// use crate::day1::solve_day1;
+use crate::day2::solve_day2;
 
-mod day1;
+// mod day1;
+mod day2;
 
 fn main() {
-    println!("Day 1 part 2 {}",solve_day1());
+    // println!("Day 1 {}",solve_day1());
+    println!("Day 2  {}",solve_day2());
 }

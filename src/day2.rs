@@ -15,14 +15,17 @@ pub fn solve_day2() -> i32 {
                     .collect();
 
                 let (is_safe_full, failing_chunk_full) = check_line(&chunks);
-                let (is_safe_partial, failing_chunk_partial) = check_line(&chunks[1..]);
-                if is_safe_partial && is_safe_full {
+                let (is_safe_partial, _) = check_line(&chunks[1..]);
+                if is_safe_partial || is_safe_full {
                     safe_report_count += 1;
                 } else {
-                    println!("level {} full failing {} parial failing {}", level, failing_chunk_full, failing_chunk_partial);
+                    chunks.remove(failing_chunk_full);
+                    let (is_safe_full, _) = check_line(&chunks);
+                    if is_safe_full {
+                        safe_report_count += 1;
+                    }
                 }
             }
-            println!("Safe report count: {}", safe_report_count);
         }
         Err(error) => {
             println!("Failed to read input: {}", error);
